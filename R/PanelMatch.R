@@ -217,7 +217,7 @@ panel_match <- function(lag, time.id, unit.id, treatment,
   }
   ##############################error checking
   if (listwise.delete & match.missing) stop("set match.missing = FALSE when listwise.delete = TRUE")
-  #if (lag < 1) stop("please specify a lag value >= 1")
+  if (lag < 1) stop("please specify a lag value >= 1")
   if (any(class(data) != "data.frame")) stop("please convert data to data.frame class")
   
   if (!all(refinement.method %in% c("mahalanobis", "ps.weight", "ps.match", "CBPS.weight", "CBPS.match", "none"))) stop("please choose a valid refinement method")
@@ -234,7 +234,7 @@ panel_match <- function(lag, time.id, unit.id, treatment,
     if(restrict.control.period < 1) stop("restricted control period specification must be >=1")
     if(restrict.control.period > lag) stop("restricted control period specification cannot be greater than lag")
   }
-  if (any(lead < 0)) stop("Please provide positive lead values. Please see the placebo_test function for more.")
+  #if (any(lead < 0)) stop("Please provide positive lead values. Please see the placebo_test function for more.")
   if (!all(qoi %in% c("att", "atc", "ate", "art"))) stop("please choose a valid qoi")
   if(any(is.na(data[, unit.id]))) stop("Cannot have NA unit ids")
   ##############################error checking
