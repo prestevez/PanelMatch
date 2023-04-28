@@ -216,7 +216,7 @@ panel_match <- function(lag, time.id, unit.id, treatment,
     lag <- 1
   }
   ##############################error checking
-  if (listwise.delete & match.missing) stop("set match.missing = FALSE when listwise.delete = TRUE")
+  #if (listwise.delete & match.missing) stop("set match.missing = FALSE when listwise.delete = TRUE")
   if (lag < 1) stop("please specify a lag value >= 1")
   if (any(class(data) != "data.frame")) stop("please convert data to data.frame class")
   

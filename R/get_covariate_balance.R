@@ -129,9 +129,11 @@ get_covariate_balance <- function(matched.sets,
                                      idx =  idxlist, msets = matched.sets)
   unlistedmats <- unlist(balance_mats, recursive = F)
   plotpoints <- list()
+  point_sds <- list()
   for(k in 1:(lag+1))
   {
     var.points <- list()
+    var.sd <- list()
     for(i in 1:length(covariates))
     {
       variable <- covariates[i]
@@ -160,11 +162,13 @@ get_covariate_balance <- function(matched.sets,
       }
       diffs <- sapply(tprd, get_mean_difs, variable = variable)
       
-      var.points[[i]] <- mean(diffs / sd.val, na.rm = T)
+      #var.points[[i]] <- mean(diffs / sd.val, na.rm = T)
+      var.points[[i]] <- mean(diffs, na.rm = T)
+      var.sd[[i]] <- mean(sd.val, na.rm = T)
     }
     names(var.points) <- covariates
     plotpoints[[k]] <- var.points
-    
+    point_sds[[k]] <- var.sd
   }
   
   names(plotpoints) <- paste0("t_", lag:0)
@@ -173,6 +177,14 @@ get_covariate_balance <- function(matched.sets,
                        function(x){(as.numeric(x))}, 
                        simplify = TRUE)
   rownames(pointmatrix) <- names(plotpoints)
+  
+  # SD matrix
+  names(point_sds) <- paste0("t_", lag:0)
+  sdmatrix <- apply((as.matrix(do.call(rbind, point_sds))), 
+                       2,
+                       function(x){(as.numeric(x))}, 
+                       simplify = TRUE)
+  rownames(sdmatrix) <- names(point_sds)
   
   remove.vars.idx <- apply(apply(pointmatrix, 2, is.nan), 2, any)
   if(sum(remove.vars.idx) > 0)
@@ -189,7 +201,14 @@ get_covariate_balance <- function(matched.sets,
   
   pointmatrix <- pointmatrix[-nrow(pointmatrix), ,drop = FALSE]
   
-  if (!plot) return(pointmatrix)
+  sdmatrix <- sdmatrix[-nrow(sdmatrix), ,drop = FALSE]
+  
+  if (!plot) return(
+    list(
+      estimates = pointmatrix,
+      se = sdmatrix
+    )
+  )
   
   if (plot)
   {
