@@ -307,6 +307,7 @@ panel_match <- function(lag, time.id, unit.id, treatment,
     attr(pm.obj, "lead") <- lead
     attr(pm.obj, "forbid.treatment.reversal") <- forbid.treatment.reversal
     attr(pm.obj, "placebo.test") <- placebo.test
+    attr(pm.obj, "exact.matching.variables") <- ifelse(is.null(exact.matching.variables), "none", exact.matching.variables)
     return(pm.obj)
   } else if (identical(qoi,"att") || identical(qoi,"atc"))
   { #note that ordered.data at this point is in column order: unit, time, treatment, everything else
@@ -345,6 +346,7 @@ panel_match <- function(lag, time.id, unit.id, treatment,
     attr(pm.obj, "lead") <- lead
     attr(pm.obj, "forbid.treatment.reversal") <- forbid.treatment.reversal
     attr(pm.obj, "placebo.test") <- placebo.test
+    attr(pm.obj, "exact.matching.variables") <- ifelse(is.null(exact.matching.variables), "none", exact.matching.variables)
     return(pm.obj)
   } else if (identical(qoi, "ate"))
   { # for ate, we have to calculate both att and atc
@@ -392,6 +394,7 @@ panel_match <- function(lag, time.id, unit.id, treatment,
     attr(pm.obj, "lead") <- lead
     attr(pm.obj, "forbid.treatment.reversal") <- forbid.treatment.reversal
     attr(pm.obj, "placebo.test") <- placebo.test
+    attr(pm.obj, "exact.matching.variables") <- ifelse(is.null(exact.matching.variables), "none", exact.matching.variables)
     return(pm.obj)
     
     
