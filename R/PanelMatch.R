@@ -237,6 +237,7 @@ panel_match <- function(lag, time.id, unit.id, treatment,
   if (any(lead < 0)) stop("Please provide positive lead values. Please see the placebo_test function for more.")
   if (!all(qoi %in% c("att", "atc", "ate", "art"))) stop("please choose a valid qoi")
   if(any(is.na(data[, unit.id]))) stop("Cannot have NA unit ids")
+  
   ##############################error checking
   
   ## balance the panel 
@@ -305,6 +306,7 @@ panel_match <- function(lag, time.id, unit.id, treatment,
     attr(pm.obj, "outcome.var") <- outcome.var
     attr(pm.obj, "lead") <- lead
     attr(pm.obj, "forbid.treatment.reversal") <- forbid.treatment.reversal
+    attr(pm.obj, "placebo.test") <- placebo.test
     return(pm.obj)
   } else if (identical(qoi,"att") || identical(qoi,"atc"))
   { #note that ordered.data at this point is in column order: unit, time, treatment, everything else
@@ -389,13 +391,13 @@ panel_match <- function(lag, time.id, unit.id, treatment,
     attr(pm.obj, "outcome.var") <- outcome.var
     attr(pm.obj, "lead") <- lead
     attr(pm.obj, "forbid.treatment.reversal") <- forbid.treatment.reversal
+    attr(pm.obj, "placebo.test") <- placebo.test
     return(pm.obj)
     
     
   } else {
     stop("qoi not specified correctly")
   }
-  
   
 }
   
